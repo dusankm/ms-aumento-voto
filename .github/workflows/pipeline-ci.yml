@@ -10,15 +10,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    
+      - name: Compilacion
+        uses: actions/checkout@v4
 
-      - uses: actions/checkout@v4
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4.2.1
+        with:
+          java-version: '8'
+          distribution: 'temurin'
 
-      - name: Hola mundo
+      - name: Compilacion
         run: |
-          echo "hola mundo"
+          mvn package
           
-      - name: Hola mundo 2
-        run: |
-          echo "hola mundo 2"
+
 
   
