@@ -25,13 +25,28 @@ jobs:
           #mvn package
           echo 'package'
           
-      - name: Analisis SonarCloud
-        run: |
-          mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:3.11.0.3922:sonar \
-          -Dsonar.token=${{secrets.SONAR_TOKEN}} \
-          -Dsonar.host.url=https://sonarcloud.io \
-          -Dsonar.organization=dusankm \
-          -Dsonar.projectKey=dusankm_ms-aumento-voto
+      #- name: Analisis SonarCloud
+        #run: |
+          #mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:3.11.0.3922:sonar \
+          #-Dsonar.token=${{secrets.SONAR_TOKEN}} \
+          #-Dsonar.host.url=https://sonarcloud.io \
+          #-Dsonar.organization=dusankm \
+          #-Dsonar.projectKey=dusankm_ms-aumento-voto
+      - name: Docker Login
+        uses: docker/login-action@v3.1.0
+        with:
+          username: dusankm
+          password: ${{secrets.DOCKER_TOKEN}}
+
+      - name: Docker build
+        run: 
+          docker build -t dusankm/ms-aumento-voto:lates .
+
+      - name: Docker push
+        run: 
+          docker push dusankm/ms-aumento-voto:lates
+          
+        
           
 
 
