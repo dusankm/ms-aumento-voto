@@ -17,21 +17,32 @@ jobs:
       - name: Setup Java JDK
         uses: actions/setup-java@v4.2.1
         with:
-          java-version: '17'
+          java-version: '8'
           distribution: 'temurin'
 
       - name: Compilacion
         run: |
           mvn package
           #echo 'package'
+
+      - name: EjecucionTestUnitarios
+        run: |
+          mvn package test
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4.2.1
+        with:
+          java-version: '17'
+          distribution: 'temurin'
           
-      #- name: Analisis SonarCloud
-        #run: |
-          #mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:3.11.0.3922:sonar \
-          #-Dsonar.token=${{secrets.SONAR_TOKEN}} \
-          #-Dsonar.host.url=https://sonarcloud.io \
-          #-Dsonar.organization=dusankm \
-          #-Dsonar.projectKey=dusankm_ms-aumento-voto
+      - name: Analisis SonarCloud
+        run: |
+          mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:3.11.0.3922:sonar \
+          -Dsonar.token=${{secrets.SONAR_TOKEN}} \
+          -Dsonar.host.url=https://sonarcloud.io \
+          -Dsonar.organization=dusankm \
+          -Dsonar.projectKey=dusankm_ms-aumento-voto
+          
       - name: Docker Login
         uses: docker/login-action@v3.1.0
         with:
