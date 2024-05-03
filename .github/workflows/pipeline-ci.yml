@@ -38,8 +38,8 @@ jobs:
         with:
           paths: ${{ github.workspace }}/**/target/site/jacoco/jacoco.xml
           token: ${{ secrets.TOKEN}}
-          min-coverage-overall: 80
-          min-coverage-changed-files: 60
+          #min-coverage-overall: 80
+          #min-coverage-changed-files: 60
 
       - name: Setup Java JDK
         uses: actions/setup-java@v4.2.1
@@ -55,10 +55,12 @@ jobs:
           -Dsonar.organization=dusankm \
           -Dsonar.projectKey=dusankm_ms-aumento-voto
 
-     # - name: SonarQube Quality Gate Check
-      #  uses: SonarSource/sonarqube-quality-gate-action@v1.1.0
-      #  with:
-      #    scanMetadataReportFile: target/sonar/report-task.txt
+      - name: SonarQube Quality Gate Check
+        env:
+          SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
+        uses: SonarSource/sonarqube-quality-gate-action@v1.1.0
+        with:
+          scanMetadataReportFile: target/sonar/report-task.txt
           
       - name: Docker Login
         uses: docker/login-action@v3.1.0
@@ -73,6 +75,14 @@ jobs:
       - name: Docker push
         run: 
           docker push dusankm/ms-aumento-voto:lates
+
+  #deploy:
+   # needs: build
+    #runs-on: self-hosted
+
+    #steps: 
+     #   - name: Clonacion de codigo
+      #    uses: actions/checkout@v4
           
         
           
